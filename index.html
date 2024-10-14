@@ -109,7 +109,7 @@ select:focus {
             <input type="text" id="Paddress" name="Paddress" placeholder="Home Address" required>
 
             <label for="parentDoc">Upload Supporting Document (ID)</label>
-            <input type="file" id="parentDoc" name="parentDoc" accept=".pdf,.jpg,.jpeg,.png" required>
+            <input type="file" id="parentDoc" name="parentDoc" accept="image/*" required>
 
             <div class="button-container">
                 <button type="button" class="button next" onclick="validateParentForm()">Next</button>
@@ -148,13 +148,13 @@ select:focus {
             </select>
 
             <label for="reportCard">Upload Report</label>
-            <input type="file" id="reportCard" name="reportCard" required>
+            <input type="file" id="reportCard" name="reportCard"  accept="image/*" required>
 
             <label for="previousSchoolRemoval">Removal from Previous School</label>
-            <input type="file" id="previousSchoolRemoval" name="previousSchoolRemoval" required>
+            <input type="file" id="previousSchoolRemoval" name="previousSchoolRemoval" accept="image/*" required>
 
             <label for="learnerIDCard">Learner ID Document</label>
-            <input type="file" id="learnerIDCard" name="learnerIDCard" required>
+            <input type="file" id="learnerIDCard" name="learnerIDCard"  accept="image/*" required>
 
             <div class="button-container">
                 <button type="button" class="button prev" onclick="showPrevSection('parentForm')">Previous</button>
@@ -176,12 +176,12 @@ select:focus {
                 <button type="submit" class="button save">Save & Submit</button>
             </div>
         </form>
+        
     </div>
 
     <script>
   // Handle form submission
-// Handle form submission
-document.getElementById("trackingForm").addEventListener("submit", async function (event) {
+  document.getElementById("trackingForm").addEventListener("submit", async function (event) {
     event.preventDefault(); // Prevent default form submission
 
     const email = document.getElementById("trackingEmail").value;
@@ -192,35 +192,48 @@ document.getElementById("trackingForm").addEventListener("submit", async functio
         return;
     }
 
-
     // Retrieve parentData and learnerData from sessionStorage
     const parentData = JSON.parse(sessionStorage.getItem('parentData')) || {};
     const learnerData = JSON.parse(sessionStorage.getItem('learnerData')) || {};
 
     // Check if parentData and learnerData contain the necessary fields
-    const { parentId, parentDoc } = parentData; // Include parentDoc
-    const { learnerId,reportCard,previousSchoolRemoval,learnerIDCard,learnerDob } = learnerData;
-
-    console.log("Parent ID:", parentId); // Debugging
-    console.log("Learner ID:", learnerId); // Debugging
+    const { parentId, parentDoc } = parentData;
+    const { learnerId, reportCard, previousSchoolRemoval, learnerIDCard } = learnerData;
 
     if (!parentId || !learnerId) {
         alert("Parent ID or Learner ID is missing. Please ensure that both forms have been filled out correctly.");
         return;
     }
 
+    // Fetch file inputs from learner form
+    const reportCardFile = document.getElementById('reportCard').files[0];
+    const previousSchoolRemovalFile = document.getElementById('previousSchoolRemoval').files[0];
+    const learnerIDCardFile = document.getElementById('learnerIDCard').files[0];
+    const parentDocFile = document.getElementById('parentDoc').files[0];
+
+   
+
     // Create FormData object
     const formData = new FormData();
     formData.append("trackingEmail", email);
     formData.append("parentId", parentId);
     formData.append("learnerId", learnerId);
-    formData.append("parentDoc", parentDoc); 
-    formData.append("reportCard", reportCard); 
-    formData.append("previousSchoolRemoval", previousSchoolRemoval); 
-    formData.append("learnerIDCard", learnerIDCard); 
 
+    // Append files to FormData
+    if (parentDocFile) {
+        formData.append("parentDoc", parentDocFile); // Append the actual file
+    }
+    if (reportCardFile) {
+        formData.append("reportCard", reportCardFile); // Append the actual file
+    }
+    if (previousSchoolRemovalFile) {
+        formData.append("previousSchoolRemoval", previousSchoolRemovalFile); // Append the actual file
+    }
+    if (learnerIDCardFile) {
+        formData.append("learnerIDCard", learnerIDCardFile); // Append the actual file
+    }
 
-    // If you want to send the entire parentData or learnerData as JSON, you can use:
+    // Append parentData and learnerData as JSON strings
     formData.append("parentData", JSON.stringify(parentData));
     formData.append("learnerData", JSON.stringify(learnerData));
 
@@ -228,23 +241,24 @@ document.getElementById("trackingForm").addEventListener("submit", async functio
     try {
         const response = await fetch("https://obscure-space-yodel-69gwwxxr64pg3r6g9-5000.app.github.dev/register", {
             method: "POST",
-            body: formData // Use FormData directly without specifying Content-Type
+            body: formData // Send FormData directly
         });
 
-        // Handle the response
         const data = await response.json();
         if (response.ok) {
-            alert("Registration successful! Check your email for confirmation.");
             sessionStorage.clear(); // Clear session storage
-            document.getElementById("trackingForm").reset(); // Reset form fields
+            document.getElementById("parentFormData").reset(); 
+            document.getElementById("learnerFormData").reset(); 
+            document.getElementById("trackingForm").reset(); 
+            window.location.href = 'thank.php'; 
         } else {
             alert(`Error: ${data.message}`);
         }
     } catch (error) {
         console.error("Error:", error);
-        alert("There was an error submitting your registration.");
     }
 });
+
 
 
 
@@ -276,8 +290,11 @@ function validateParentForm() {
     const parentEmail = document.getElementById('parentEmail').value.trim();
     const parentPhone = document.getElementById('parentPhone').value.trim();
     const Paddress = document.getElementById('Paddress').value.trim();
-    const parentDoc = document.getElementById('parentDoc').files.length;
     const parentID = document.getElementById('parentID').value.trim();
+
+         // Get file elements from DOM
+         const parentDoc = document.getElementById('parentDoc').files[0]; // Get the file object
+       
 
     let isValid = true;
 
@@ -306,16 +323,26 @@ function validateParentForm() {
     }
 
     // Validate if document is uploaded
-    if (parentDoc === 0) {
-        errorContainer.innerHTML += 'Please upload the Supporting Document (ID).<br>';
-        isValid = false;
-    }
+    if (!parentDoc) {
+    errorContainer.innerHTML += 'Please upload the Supporting Document (ID).<br>';
+    isValid = false;
+}
 
     // Validate 13-digit ID Number
     if (!/^\d{13}$/.test(parentID)) {
         errorContainer.innerHTML += 'ID Number must be a 13-digit number.<br>';
         isValid = false;
     }
+    const allowedFileTypes = ['image/jpeg', 'image/png', 'image/jpg'];
+
+     
+
+// Check if any file is not an image
+if (  (parentDoc && !allowedFileTypes.includes(parentDoc.type)) ) {
+  
+   errorContainer.innerHTML += 'Please upload only images (jpg, png, jpeg).';
+  isValid = false;
+}
 
     // If form is valid, proceed to the next section
     if (isValid) {
@@ -400,9 +427,10 @@ function validateLearnerForm() {
     const LearnerID = document.getElementById('LearnerID').value.trim();
     const learnerDob = document.getElementById('learnerDob').value.trim();
     const learnerGrade = document.getElementById('learnerGrade').value.trim();
-    const reportCard = document.getElementById('reportCard').files.length;
-    const previousSchoolRemoval = document.getElementById('previousSchoolRemoval').files.length;
-    const learnerIDCard = document.getElementById('learnerIDCard').files.length;
+
+    const reportCard = document.getElementById('reportCard').files[0];
+        const previousSchoolRemoval = document.getElementById('previousSchoolRemoval').files[0];
+        const learnerIDCard = document.getElementById('learnerIDCard').files[0];
 
     let isValid = true;
 
@@ -431,21 +459,29 @@ function validateLearnerForm() {
         isValid = false;
     }
 
-    if (reportCard === 0) {
+    if (!reportCard) {
         errorContainer.innerHTML += 'Please upload the Report.<br>';
         isValid = false;
     }
 
-    if (previousSchoolRemoval === 0) {
+    if (!previousSchoolRemoval) {
         errorContainer.innerHTML += 'Please upload the Removal Document.<br>';
         isValid = false;
     }
 
-    if (learnerIDCard === 0) {
+    if (!learnerIDCard) {
         errorContainer.innerHTML += 'Please upload the Learner ID Document.<br>';
         isValid = false;
     }
 
+    const allowedFileTypes = ['image/jpeg', 'image/png', 'image/jpg'];
+
+    if ((reportCard && !allowedFileTypes.includes(reportCard.type)) ||
+  (previousSchoolRemoval && !allowedFileTypes.includes(previousSchoolRemoval.type)) ||
+  (learnerIDCard && !allowedFileTypes.includes(learnerIDCard.type))  ) { 
+   errorContainer.innerHTML += 'Please upload only images (jpg, png, jpeg).<br>';
+  isValid = false;
+}
     // If the form is valid, proceed to the next section
     if (isValid) {
         // Store learner data in a single object
