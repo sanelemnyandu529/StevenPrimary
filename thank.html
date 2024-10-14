@@ -3,574 +3,147 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Student Application Form</title>
+    <title>Thank You</title>
     <style>
+        /* General styling */
         body {
             font-family: Arial, sans-serif;
-            background-color: #f0f0f0;
-            margin: 0;
-            padding: 0;
-        }
-        .container {
-            width: 50%;
-            margin: auto;
-            background-color: white;
-            padding: 20px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        }
-        .form-section {
-            display: none;
-        }
-        .form-section.active {
-            display: block;
-        }
-        h2 {
+            background-color: #f0f8ff;
             text-align: center;
+            padding-top: 50px;
+            overflow: hidden; /* Prevent scrollbars from appearing */
+        }
+
+        .container {
+            padding: 50px;
+            background-color: #fff;
+            border-radius: 10px;
+            display: inline-block;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            position: relative;
+            z-index: 2;
+        }
+
+        h3 {
+            font-size: 2.5em;
+            color: #4CAF50;
+            margin-bottom: 20px;
+        }
+
+        p {
+            font-size: 1.5em;
             color: #333;
         }
-        label {
-            display: block;
-            margin-top: 10px;
-        }
-        input[type="text"],
-input[type="email"],
-input[type="file"],
-input[type="number"],
-input[type="date"],
-select {
-    width: 100%;
-    padding: 10px;
-    margin-top: 5px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    /* Optional: Add background color and font for better appearance */
-    background-color: #fff;
-    font-family: inherit; /* Use the same font as the rest of the form */
-    font-size: inherit; /* Use the same font size as the rest of the form */
-}
 
-/* Optional: For better appearance on focus */
-input[type="text"]:focus,
-input[type="email"]:focus,
-input[type="file"]:focus,
-input[type="number"]:focus,
-input[type="date"]:focus,
-select:focus {
-    border-color: #007BFF; /* Change border color on focus */
-    outline: none; /* Remove default outline */
-}
+        /* Star animation styling */
+        .stars {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+            pointer-events: none; /* Ignore pointer events */
+            overflow: hidden;
+        }
 
-        .button {
-            padding: 10px 20px;
-            border: none;
-            color: white;
-            cursor: pointer;
-            border-radius: 5px;
-            margin-top: 20px;
+        .star {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            background-color: #ffcc00;
+            border-radius: 50%;
+            box-shadow: 0 0 10px rgba(255, 204, 0, 0.8);
+            animation: star-animation 3s linear infinite;
+            
         }
-        .next {
-            background-color: green;
+
+        /* Animation keyframes for stars */
+        @keyframes star-animation {
+            0% {
+                transform: translateY(-100px) scale(0.5);
+                opacity: 0;
+            }
+            50% {
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(800px) scale(1.2);
+                opacity: 0;
+            }
         }
-        .prev {
-            background-color: gray;
+
+        /* Generate random star positions */
+        .star:nth-child(1) {
+            left: 10%;
+            animation-delay: 0s;
+            animation-duration: 3s;
         }
-        .save {
-            background-color: yellow;
-            color: black;
+
+        .star:nth-child(2) {
+            left: 30%;
+            animation-delay: 0.5s;
+            animation-duration: 2.5s;
         }
-        .button-container {
-            display: flex;
-            justify-content: space-between;
+
+        .star:nth-child(3) {
+            left: 50%;
+            animation-delay: 1s;
+            animation-duration: 3.5s;
         }
+
+        .star:nth-child(4) {
+            left: 70%;
+            animation-delay: 0.7s;
+            animation-duration: 4s;
+        }
+
+        .star:nth-child(5) {
+            left: 90%;
+            animation-delay: 0.3s;
+            animation-duration: 3.2s;
+        }
+
+        .star:nth-child(6) {
+            left: 20%;
+            animation-delay: 1.5s;
+            animation-duration: 3.8s;
+        }
+
+        .star:nth-child(7) {
+            left: 60%;
+            animation-delay: 1s;
+            animation-duration: 2.7s;
+        }
+
+        .star:nth-child(8) {
+            left: 80%;
+            animation-delay: 0.9s;
+            animation-duration: 3.6s;
+        }
+        
     </style>
 </head>
 <body>
 
-<div class="container">
-    <h2>Student Application Form</h2>
-
-    <!-- Parent/Guardian Form Section -->
-    <div id="parentForm" class="form-section active">
-        <h3>Parent/Guardian Information</h3>
-        <form id="parentFormData">
-            <label for="parentName">Parent/Guardian Name</label>
-            <input type="text" id="parentName" name="parentName" placeholder="full name" required>
-
-            <label for="parentID">ID Number</label>
-            <input type="number" id="parentID" name="parentID" required >
-
-            <label for="parentEmail">Email</label>
-            <input type="email" id="parentEmail" name="parentEmail" placeholder="e.g. parent@example.com" required>
-
-            <label for="parentPhone">Phone Number</label>
-            <input type="text" id="parentPhone" name="parentPhone" placeholder="xxx xxx xxxx" required>
-
-            <label for="Paddress">Address</label>
-            <input type="text" id="Paddress" name="Paddress" placeholder="Home Address" required>
-
-            <label for="parentDoc">Upload Supporting Document (ID)</label>
-            <input type="file" id="parentDoc" name="parentDoc" accept="image/*" required>
-
-            <div class="button-container">
-                <button type="button" class="button next" onclick="validateParentForm()">Next</button>
-            </div>
-        </form>
-        <div id="formErrors" style="color: red; margin-top: 10px;"></div>
+    <!-- Star container -->
+    <div class="stars">
+        <div class="star"></div>
+        <div class="star"></div>
+        <div class="star"></div>
+        <div class="star"></div>
+        <div class="star"></div>
+        <div class="star"></div>
+        <div class="star"></div>
+        <div class="star"></div>
     </div>
 
-    <!-- Learner Form Section -->
-    <div id="learnerForm" class="form-section">
-        <h3>Learner Information</h3>
-        <form id="learnerFormData">
-            <label for="Fname">First Name</label>
-            <input type="text" id="Fname" name="Fname" required>
-
-            <label for="Sname">Second Name</label>
-            <input type="text" id="Sname" name="Sname" placeholder="optional">
-
-            <label for="Surname">Surname</label>
-            <input type="text" id="Surname" name="Surname" required>
-
-            <label for="LearnerID">ID Number</label>
-            <input type="number" id="LearnerID" name="LearnerID" required onblur="checkLearnerID()" >
-            <div id="learnerIdMessage"></div>
-
-            <label for="learnerDob">Date of Birth</label>
-            <input type="date" id="learnerDob" name="learnerDob" required>
-
-            <label for="learnerGrade">Grade Applying For</label>
-            <select id="learnerGrade" name="learnerGrade" required>
-                <option value="" disabled selected>Select a grade</option>
-                <option value="4">Grade 4</option>
-                <option value="5">Grade 5</option>
-                <option value="6">Grade 6</option>
-                <option value="7">Grade 7</option>
-            </select>
-
-            <label for="reportCard">Upload Report</label>
-            <input type="file" id="reportCard" name="reportCard"  accept="image/*" required>
-
-            <label for="previousSchoolRemoval">Removal from Previous School</label>
-            <input type="file" id="previousSchoolRemoval" name="previousSchoolRemoval" accept="image/*" required>
-
-            <label for="learnerIDCard">Learner ID Document</label>
-            <input type="file" id="learnerIDCard" name="learnerIDCard"  accept="image/*" required>
-
-            <div class="button-container">
-                <button type="button" class="button prev" onclick="showPrevSection('parentForm')">Previous</button>
-                <button type="button" class="button next" id="nextButton" onclick="validateLearnerForm()" disabled >Next</button>
-            </div>
-        </form>
-        <div id="learnerFormErrors" style="color: red; margin-top: 10px;"></div>
+    <!-- Thank You Message Container -->
+    <div class="container">
+        <di class="startsCointaner"> </di>
+        <h3>Congratulations!</h3>
+        <p>Your application is in progress. We will notify you soon.</p>
     </div>
-
-    <!-- Email & Tracking Section -->
-    <div id="emailSection" class="form-section">
-        <h3>Track Your Application</h3>
-        <form id="trackingForm">
-            <label for="trackingEmail">Enter Your Email for Tracking Status</label>
-            <input type="email" id="trackingEmail" name="trackingEmail" required>
-
-            <div class="button-container">
-                <button type="button" class="button prev" onclick="showPrevSection('learnerForm')">Previous</button>
-                <button type="submit" class="button save">Save & Submit</button>
-            </div>
-        </form>
-        
-    </div>
-
-    <script>
-  // Handle form submission
-  document.getElementById("trackingForm").addEventListener("submit", async function (event) {
-    event.preventDefault(); // Prevent default form submission
-
-    const email = document.getElementById("trackingEmail").value;
-
-    // Validate email format
-    if (!validateEmail(email)) {
-        alert("Please enter a valid email address.");
-        return;
-    }
-
-    // Retrieve parentData and learnerData from sessionStorage
-    const parentData = JSON.parse(sessionStorage.getItem('parentData')) || {};
-    const learnerData = JSON.parse(sessionStorage.getItem('learnerData')) || {};
-
-    // Check if parentData and learnerData contain the necessary fields
-    const { parentId, parentDoc } = parentData;
-    const { learnerId, reportCard, previousSchoolRemoval, learnerIDCard } = learnerData;
-
-    if (!parentId || !learnerId) {
-        alert("Parent ID or Learner ID is missing. Please ensure that both forms have been filled out correctly.");
-        return;
-    }
-
-    // Fetch file inputs from learner form
-    const reportCardFile = document.getElementById('reportCard').files[0];
-    const previousSchoolRemovalFile = document.getElementById('previousSchoolRemoval').files[0];
-    const learnerIDCardFile = document.getElementById('learnerIDCard').files[0];
-    const parentDocFile = document.getElementById('parentDoc').files[0];
-
-   
-
-    // Create FormData object
-    const formData = new FormData();
-    formData.append("trackingEmail", email);
-    formData.append("parentId", parentId);
-    formData.append("learnerId", learnerId);
-
-    // Append files to FormData
-    if (parentDocFile) {
-        formData.append("parentDoc", parentDocFile); // Append the actual file
-    }
-    if (reportCardFile) {
-        formData.append("reportCard", reportCardFile); // Append the actual file
-    }
-    if (previousSchoolRemovalFile) {
-        formData.append("previousSchoolRemoval", previousSchoolRemovalFile); // Append the actual file
-    }
-    if (learnerIDCardFile) {
-        formData.append("learnerIDCard", learnerIDCardFile); // Append the actual file
-    }
-
-    // Append parentData and learnerData as JSON strings
-    formData.append("parentData", JSON.stringify(parentData));
-    formData.append("learnerData", JSON.stringify(learnerData));
-
-    // Send the form data to the server
-    try {
-        const response = await fetch("http://localhost:5000/register", {
-            method: "POST",
-            body: formData // Send FormData directly
-        });
-
-        const data = await response.json();
-        if (response.ok) {
-            sessionStorage.clear(); // Clear session storage
-            document.getElementById("parentFormData").reset(); 
-            document.getElementById("learnerFormData").reset(); 
-            document.getElementById("trackingForm").reset(); 
-            window.location.href = 'thank.php'; 
-        } else {
-            alert(`Error: ${data.message}`);
-        }
-    } catch (error) {
-        console.error("Error:", error);
-    }
-});
-
-
-
-
-    // Function to show the next section
-    function showNextSection(sectionId) {
-    const sections = document.querySelectorAll('.form-section');
-    sections.forEach(section => section.classList.remove('active'));
-    document.getElementById(sectionId).classList.add('active');
-
-    if (sectionId === 'learnerForm') {
-        loadParentData(); // Load parent data when showing learner form
-    } else if (sectionId === 'emailSection') {
-        setTrackingEmail(); 
-    }
-}
-  // Helper function to validate email format
-function validateEmail(email) {
-    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    return emailPattern.test(email);
-}
-
-// Function to validate parent form
-function validateParentForm() {
-    const errorContainer = document.getElementById('formErrors');
-    errorContainer.innerHTML = ''; // Clear any previous errors
-
-    // Get form field values
-    const parentName = document.getElementById('parentName').value.trim();
-    const parentEmail = document.getElementById('parentEmail').value.trim();
-    const parentPhone = document.getElementById('parentPhone').value.trim();
-    const Paddress = document.getElementById('Paddress').value.trim();
-    const parentID = document.getElementById('parentID').value.trim();
-
-         // Get file elements from DOM
-         const parentDoc = document.getElementById('parentDoc').files[0]; // Get the file object
-       
-
-    let isValid = true;
-
-    // Validate Parent/Guardian Name
-    if (!parentName) {
-        errorContainer.innerHTML += 'Please enter the Parent/Guardian Name.<br>';
-        isValid = false;
-    }
-
-    // Validate email
-    if (!parentEmail || !validateEmail(parentEmail)) {
-        errorContainer.innerHTML += 'Please enter a valid email address.<br>';
-        isValid = false;
-    }
-
-    // Validate Phone Number
-    if (!parentPhone) {
-        errorContainer.innerHTML += 'Please enter the Phone Number.<br>';
-        isValid = false;
-    }
-
-    // Validate Address
-    if (!Paddress) {
-        errorContainer.innerHTML += 'Please enter the Address.<br>';
-        isValid = false;
-    }
-
-    // Validate if document is uploaded
-    if (!parentDoc) {
-    errorContainer.innerHTML += 'Please upload the Supporting Document (ID).<br>';
-    isValid = false;
-}
-
-    // Validate 13-digit ID Number
-    if (!/^\d{13}$/.test(parentID)) {
-        errorContainer.innerHTML += 'ID Number must be a 13-digit number.<br>';
-        isValid = false;
-    }
-    const allowedFileTypes = ['image/jpeg', 'image/png', 'image/jpg'];
-
-     
-
-// Check if any file is not an image
-if (  (parentDoc && !allowedFileTypes.includes(parentDoc.type)) ) {
-  
-   errorContainer.innerHTML += 'Please upload only images (jpg, png, jpeg).';
-  isValid = false;
-}
-
-    // If form is valid, proceed to the next section
-    if (isValid) {
-        // Store parent data in a single object
-        const parentData = {
-            parentId: parentID,
-            parentName: parentName,
-            parentEmail: parentEmail,
-            parentPhone: parentPhone,
-            parentDoc:parentDoc,
-            Paddress: Paddress
-        };
-
-        // Save parentData to sessionStorage
-        sessionStorage.setItem('parentData', JSON.stringify(parentData));
-
-        // Clear error messages
-        errorContainer.innerHTML = '';
-
-        // Proceed to next section
-        showNextSection('learnerForm');
-    }
-}
-
-
-
-function checkLearnerID() {
-    const learnerId = document.getElementById('LearnerID').value;
-
-    if (learnerId) {
-        fetch('http://localhost:5000/check-learner-id', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ learnerId }),
-        })
-        .then(response => response.json())
-        .then(data => {
-            const messageDiv = document.getElementById('learnerIdMessage');
-            const nextButton = document.getElementById('nextButton');
-
-            if (data.exists) {
-                // Display message if learnerID exists and show the status
-                messageDiv.innerHTML = `The learner ID is already applied. Current status: ${data.status}`;
-                messageDiv.style.color = 'red';
-                
-                // Call function to invalidate the form and disable Next button
-                invalidateLearnerForm();
-            } else {
-                // Clear the message if learnerID doesn't exist
-                messageDiv.innerHTML = '';
-                
-                // Enable the Next button if learnerID is valid
-                nextButton.disabled = false;
-            }
-        })
-        .catch(error => {
-            console.error('Error:', error);
-        });
-    } else {
-        // Disable the Next button if learnerId is empty
-        document.getElementById('nextButton').disabled = true;
-    }
-}
-
-// Function to invalidate the learner form
-function invalidateLearnerForm() {
-    const errorContainer = document.getElementById('learnerFormErrors');
-    errorContainer.innerHTML = 'The learner ID already exists. Please check and try again.';
-    document.getElementById('nextButton').disabled = true; // Disable the Next button
-}
-
-// Function to validate learner form
-function validateLearnerForm() {
-    const errorContainer = document.getElementById('learnerFormErrors');
-    errorContainer.innerHTML = ''; // Clear previous errors
-
-    const Fname = document.getElementById('Fname').value.trim();
-    const Sname = document.getElementById('Sname').value.trim();
-    const Surname = document.getElementById('Surname').value.trim();
-    const LearnerID = document.getElementById('LearnerID').value.trim();
-    const learnerDob = document.getElementById('learnerDob').value.trim();
-    const learnerGrade = document.getElementById('learnerGrade').value.trim();
-
-    const reportCard = document.getElementById('reportCard').files[0];
-        const previousSchoolRemoval = document.getElementById('previousSchoolRemoval').files[0];
-        const learnerIDCard = document.getElementById('learnerIDCard').files[0];
-
-    let isValid = true;
-
-    if (!Fname) {
-        errorContainer.innerHTML += 'Please enter the First Name.<br>';
-        isValid = false;
-    }
-
-    if (!Surname) {
-        errorContainer.innerHTML += 'Please enter the Surname.<br>';
-        isValid = false;
-    }
-
-    if (!/^\d{13}$/.test(LearnerID)) {
-        errorContainer.innerHTML += 'Learner ID Number must be a 13-digit number.<br>';
-        isValid = false;
-    }
-
-    if (!learnerDob) {
-        errorContainer.innerHTML += 'Please select the Date of Birth.<br>';
-        isValid = false;
-    }
-
-    if (!learnerGrade) {
-        errorContainer.innerHTML += 'Please select the Grade.<br>';
-        isValid = false;
-    }
-
-    if (!reportCard) {
-        errorContainer.innerHTML += 'Please upload the Report.<br>';
-        isValid = false;
-    }
-
-    if (!previousSchoolRemoval) {
-        errorContainer.innerHTML += 'Please upload the Removal Document.<br>';
-        isValid = false;
-    }
-
-    if (!learnerIDCard) {
-        errorContainer.innerHTML += 'Please upload the Learner ID Document.<br>';
-        isValid = false;
-    }
-
-    const allowedFileTypes = ['image/jpeg', 'image/png', 'image/jpg'];
-
-    if ((reportCard && !allowedFileTypes.includes(reportCard.type)) ||
-  (previousSchoolRemoval && !allowedFileTypes.includes(previousSchoolRemoval.type)) ||
-  (learnerIDCard && !allowedFileTypes.includes(learnerIDCard.type))  ) { 
-   errorContainer.innerHTML += 'Please upload only images (jpg, png, jpeg).<br>';
-  isValid = false;
-}
-    // If the form is valid, proceed to the next section
-    if (isValid) {
-        // Store learner data in a single object
-        const learnerData = {
-            learnerId: LearnerID,
-            Fname: Fname,
-            Sname: Sname,
-            Surname: Surname,
-            learnerDob: learnerDob,
-            learnerGrade: learnerGrade,
-            reportCard: reportCard,
-            previousSchoolRemoval: previousSchoolRemoval,
-            learnerIDCard: learnerIDCard,
-        };
-        sessionStorage.setItem('learnerData', JSON.stringify(learnerData)); // Store as a JSON string
-        showNextSection('emailSection');
-    }
-}
-
-
-    // Function to load parent data from sessionStorage
-    function loadParentData() {
-    // Retrieve parent data from sessionStorage
-    const parentData = JSON.parse(sessionStorage.getItem('parentData'));
-
-    if (parentData) {
-        // Populate fields with stored parent data
-        document.getElementById('parentName').value = parentData.parentName;
-        document.getElementById('parentEmail').value = parentData.parentEmail;
-        document.getElementById('parentPhone').value = parentData.parentPhone;
-        document.getElementById('Paddress').value = parentData.Paddress;
-        document.getElementById('parentID').value = parentData.parentId;  // Added this to populate the parentID
-    } else {
-        console.error('No parent data found in sessionStorage');
-    }
-}
-
-   
-  
-  // Function to set the tracking email when moving to the email section
-  function setTrackingEmail(email) {
-        const trackingEmailInput = document.getElementById('trackingEmail');
-        trackingEmailInput.value = email; // Set the email in the input field
-    }
-
-    // Call this function with the parent's email when transitioning to the email section
-    function showNextSection(sectionId) {
-        const parentEmail = document.getElementById('parentEmail').value; // Get the parent's email from the parent form
-        if (sectionId === 'emailSection') {
-            setTrackingEmail(parentEmail); // Set the parent's email in the tracking email input
-        }
-        // Your existing logic to show the next section
-        document.querySelectorAll('.form-section').forEach(section => section.classList.remove('active'));
-        document.getElementById(sectionId).classList.add('active');
-    }
-    // Function to validate email format
-    function validateEmail(email) {
-        const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        return re.test(String(email).toLowerCase());
-    }
-</script>
-
-
-<script>
-    // Define the showPrevSection function
-    function showPrevSection(sectionId) {
-        // Hide the current section
-        const currentSection = document.querySelector('.form-section.active');
-        if (currentSection) {
-            currentSection.classList.remove('active');
-        }
-
-        // Show the previous section
-        const prevSection = document.getElementById(sectionId);
-        if (prevSection) {
-            prevSection.classList.add('active');
-        }
-    }
-</script>
-
-
-</div>
-
-
-
 
 </body>
 </html>
-
-
-
-
